@@ -9,7 +9,27 @@
 * [Eclipse](https://www.eclipse.org/downloads/) (Enterprise Edition)
 * Apache Maven
 
-## Configure Java Path Finder
+## Configure Eclipse and Tomcat
+Double check configurations are correct in Eclipse->Preferences:
+* Java -> Compiler-> JDK Compliance = 1.8
+* Java -> Installed JREs -> select Java 8
+
+Connect Tomcat in Ecliplse:
+* Click Project Explorer -> click Server (at the bottom)
+* Apache -> Tomcat v9.0 Server -> Select Tomcat installation directory (where Tomcat is downloaded) -> Finish
+
+## Running This Project
+* Clone the repo
+* Import into Eclipse as existing Maven project
+  * File -> Import -> Existing Maven Projects -> Next -> select root directory -> Finish
+  * Right-click the project and select Properties. Make sure 1) Java Build Path -> Libraries has Java 8 JRE library and Tomcat 9.0, 2) Java Compiler -> JDK compliance is at 1.8.
+* Right-click project -> Run as -> Maven Build -> Goal = clean install
+* Use the scripts in `sql-scripts` folder to create the `web-student-tracker` database
+* Right-click student-info-tracker/WebContent/list-students.jsp -> Run As -> Run on server -> select Tomcat 9
+* Now can view the page on localhost:8080
+
+# Integrate with Java Path Finder
+## Configure JPF
 ### Download
 Install Ant:
 ```
@@ -67,22 +87,3 @@ cd ~/path-to-JPF_HOME/jpf-symbc
 ant test
 ```
 * If build failed because "The JUNIT_HOME environment variable must be set", replace all ${junit.home} with the path to junit in builx.xml.
-
-## Configure Eclipse and Tomcat
-Double check configurations are correct in Eclipse->Preferences:
-* Java -> Compiler-> JDK Compliance = 1.8
-* Java -> Installed JREs -> select Java 8
-
-Connect Tomcat in Ecliplse:
-* Click Project Explorer -> click Server (at the bottom)
-* Apache -> Tomcat v9.0 Server -> Select Tomcat installation directory (where Tomcat is downloaded) -> Finish
-
-## Running This Project
-* Clone the repo
-* Import into Eclipse as existing Maven project
-  * File -> Import -> Existing Maven Projects -> Next -> select root directory -> Finish
-  * Right-click the project and select Properties. Make sure 1) Java Build Path -> Libraries has Java 8 JRE library and Tomcat 9.0, 2) Java Compiler -> JDK compliance is at 1.8.
-* Right-click project -> Run as -> Maven Build -> Goal = clean install
-* Use the scripts in `sql-scripts` folder to create the `web-student-tracker` database
-* Right-click student-info-tracker/WebContent/list-students.jsp -> Run As -> Run on server -> select Tomcat 9
-* Now can view the page on localhost:8080
