@@ -20,13 +20,18 @@ Connect Tomcat in Ecliplse:
 
 ## Running This Project
 * Clone the repo
+* Use the scripts in `sql-scripts` folder to create the `web-student-tracker` database
 * Import into Eclipse as existing Maven project
   * File -> Import -> Existing Maven Projects -> Next -> select root directory -> Finish
   * Right-click the project and select Properties. Make sure 1) Java Build Path -> Libraries has Java 8 JRE library and Tomcat 9.0, 2) Java Compiler -> JDK compliance is at 1.8.
 * Right-click project -> Run as -> Maven Build -> Goal = clean install
-* Use the scripts in `sql-scripts` folder to create the `web-student-tracker` database
-* Right-click student-info-tracker/WebContent/list-students.jsp -> Run As -> Run on server -> select Tomcat 9
-* Now can view the page on localhost:8080
+* Compile the project: `mvn compile`
+* Package the project as a WAR file: `mvn package`
+* Deploy the WAR file to Tomcat: 
+  * Stop the Tomcat server in eclipse if it's currently running.
+  * Open a terminal window, navigate to Tomcat installation directory. Start Tomcat with `bin/startup.sh`
+  * Navigate to project directory, copy `student-info-tracker-maven/target/student-info-tracker.war` into Tomcat installation directory: `path-to-tomcat/webapps`
+* Now can view the page on [http://localhost:8080/student-info-tracker](http://localhost:8080/student-info-tracker)
 
 # Integrate with Java Path Finder
 ## Configure JPF
