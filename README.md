@@ -98,3 +98,8 @@ ant test
 ```
 * If build failed because "The JUNIT_HOME environment variable must be set", replace all ${junit.home} with the path to junit in builx.xml.
 * export JUNIT_HOME=path-to-junit
+
+## JPF/SPF Resources
+* [Installation walkthrough](https://verificationglasses.wordpress.com/2017/02/13/installing-java-pathfinder-jpf-for-symbolic-execution/)
+* [Symbolic execution examples](https://javapathfinder.sourceforge.net/extensions/symbc/doc/index.html)
+* [JPF core wiki](https://github.com/javapathfinder/jpf-core/wiki)
