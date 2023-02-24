@@ -92,3 +92,4 @@ cd ~/path-to-JPF_HOME/jpf-symbc
 ant test
 ```
 * If build failed because "The JUNIT_HOME environment variable must be set", replace all ${junit.home} with the path to junit in builx.xml.
+* export JUNIT_HOME=path-to-junit
