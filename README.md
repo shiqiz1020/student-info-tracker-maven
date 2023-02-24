@@ -9,6 +9,11 @@
 * [Eclipse](https://www.eclipse.org/downloads/) (Enterprise Edition)
 * Apache Maven
 
+## Configure the project in linux
+```
+bash ./scripts/pipeline.sh
+```
+
 ## Configure Eclipse and Tomcat
 Double check configurations are correct in Eclipse->Preferences:
 * Java -> Compiler-> JDK Compliance = 1.8
