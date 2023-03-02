@@ -40,6 +40,39 @@
         <version>3.8.1</version>
         <scope>test</scope>
     </dependency>
+
+    <dependency>
+        <groupId>jpf</groupId>
+        <artifactId>jpf-core</artifactId>
+        <version>0.0</version>
+        <scope>system</scope>
+        <systemPath>/Users/shiqizhang/Desktop/JPF_HOME/jpf-core/build/jpf.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>jpf-symbc</groupId>
+        <artifactId>jpf-symbc</artifactId>
+        <version>0.0</version>
+        <scope>system</scope>
+        <systemPath>/Users/shiqizhang/Desktop/JPF_HOME/jpf-symbc/build/jpf-symbc.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>choco</groupId>
+        <artifactId>choco</artifactId>
+        <version>0.0</version>
+        <scope>system</scope>
+        <systemPath>/Users/shiqizhang/Desktop/JPF_HOME/jpf-symbc/lib/choco-1_2_04.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>org.choco-solver</groupId>
+        <artifactId>choco-solver</artifactId>
+        <version>0.0</version>
+        <scope>system</scope>
+        <systemPath>/Users/shiqizhang/Desktop/JPF_HOME/jpf-symbc/lib/choco-solver-2.1.1-20100709.142532-2.jar</systemPath>
+    </dependency>
+    
          
   </dependencies>
 

@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
+
 /**
  * Servlet implementation class StudentControllerServlet
  */
@@ -83,7 +87,14 @@ public class StudentControllerServlet extends HttpServlet {
 	}
 	
 	private void searchStudents(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // read search name from form data
+       String[] args = {"servlet.jpf"};
+       Config config = JPF.createConfig(args);
+       JPF jpf = new JPF(config);
+       SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
+       jpf.addListener(listener);
+       jpf.run();
+		
+		// read search name from form data
         String searchName = request.getParameter("searchName");
         
         // search students from db util
@@ -95,6 +106,11 @@ public class StudentControllerServlet extends HttpServlet {
         // send to JSP page (view)
         RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
         dispatcher.forward(request, response);
+    }
+
+    public List<Student> symbolicSearchStudents(HttpServletRequest request, HttpServletResponse response, String searchName) throws Exception {
+        List<Student> students = studentDbUtil.searchStudents(searchName);
+        return students;
     }
 	
 	private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
@@ -173,4 +189,17 @@ public class StudentControllerServlet extends HttpServlet {
 		// send back to main page (student list)
 		response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
 	}
+
+	// public static void main(String[] args) {
+	// 	StudentControllerServlet servlet = new StudentControllerServlet();
+	// 	try {
+	// 		servlet.symbolicSearchStudents(null, null, "searchName");
+	// 	} catch (Exception e) {
+
+	// 	}
+	// }	
 }
+
+
+
+

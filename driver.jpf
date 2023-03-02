@@ -1,0 +1,21 @@
+@using=jpf-core
+@using=jpf-symbc
+ 
+target=com.shiqi.web.Driver
+
+classpath=target/classes
+
+symbolic.method=Driver.symbolic(sym#sym#sym)
+
+search.multiple_errors=true
+
+symbolic.debug=true
+
+symbolic.dp=choco
+
+#jpf.report.console.finished=
+
+#listener = .symbc.SymbolicListener
+#listener = .listener.ChoiceTracker
+listener = gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener
+

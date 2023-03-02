@@ -8,9 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.annotation.Resource;
+
+// import gov.nasa.jpf.symbc.Debug;
 
 public class StudentDbUtil {
 	private DataSource dataSource;
+
+	// public StudentDbUtil() {
+	// 	dataSource = null;
+	// }
 	
 	public StudentDbUtil(DataSource theDataSource) {
 		dataSource = theDataSource;
@@ -263,4 +270,14 @@ public class StudentDbUtil {
             close(connection, stmt, rs);
         }
     }
+	
+	// public static void main(String[] args) {
+    //     StudentDbUtil studentDbUtil = new StudentDbUtil();
+    //     try{
+    //         List<Student> students = studentDbUtil.searchStudents("test");
+    //     } catch (Exception e){
+
+    //     }
+	// }	
+	
 }
