@@ -13,6 +13,10 @@ symbolic.debug=true
 
 symbolic.dp=choco
 
+#log.level=finer
+log.level=fine
+log.fine=gov.nasa.jpf.vm.ClassInfo
+
 #jpf.report.console.finished=
 
 #listener = .symbc.SymbolicListener

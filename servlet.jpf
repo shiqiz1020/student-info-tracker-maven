@@ -7,14 +7,14 @@ classpath=target/classes
 
 symbolic.method=StudentControllerServlet.symbolicSearchStudents(sym#sym#sym)
 
-
 search.multiple_errors=true
 
 symbolic.debug=true
 
 symbolic.dp=choco
 
-#jpf.report.console.finished=
+log.level=finer
+#log.fine=gov.nasa.jpf.vm:gov.nasa.jpf
 
 #listener = .symbc.SymbolicListener
 #listener = .listener.ChoiceTracker

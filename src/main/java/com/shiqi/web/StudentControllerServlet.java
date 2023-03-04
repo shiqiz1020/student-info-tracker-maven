@@ -190,14 +190,14 @@ public class StudentControllerServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
 	}
 
-	// public static void main(String[] args) {
-	// 	StudentControllerServlet servlet = new StudentControllerServlet();
-	// 	try {
-	// 		servlet.symbolicSearchStudents(null, null, "searchName");
-	// 	} catch (Exception e) {
+	public static void main(String[] args) {
+	 	StudentControllerServlet servlet = new StudentControllerServlet();
+	 	try {
+	 		servlet.symbolicSearchStudents(null, null, "searchName");
+	 	} catch (Exception e) {
 
-	// 	}
-	// }	
+	 	}
+	}	
 }
 
 

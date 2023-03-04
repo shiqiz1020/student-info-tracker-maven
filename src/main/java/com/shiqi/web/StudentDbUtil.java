@@ -10,17 +10,27 @@ import java.util.List;
 import javax.sql.DataSource;
 import javax.annotation.Resource;
 
-// import gov.nasa.jpf.symbc.Debug;
+//import gov.nasa.jpf.JPF;
+//import gov.nasa.jpf.Config;
+//import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
 
 public class StudentDbUtil {
 	private DataSource dataSource;
 
-	// public StudentDbUtil() {
-	// 	dataSource = null;
-	// }
+//	public StudentDbUtil() {
+//	 	dataSource = null;
+//	}
 	
 	public StudentDbUtil(DataSource theDataSource) {
+//		String[] args = {"dbutil.jpf"};
+//		Config config = JPF.createConfig(args);
+//		JPF jpf = new JPF(config);
+//		SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
+//		jpf.addListener(listener);
+		
 		dataSource = theDataSource;
+		
+//		jpf.run();
 	}
 	
 	public List<Student> getStudents() throws Exception {
@@ -60,6 +70,7 @@ public class StudentDbUtil {
 		} finally {
 			// close JDBC objects
 			close(connection, stmt, rs);
+//			this.searchStudents("key");
 		}
 	}
 
@@ -271,13 +282,16 @@ public class StudentDbUtil {
         }
     }
 	
-	// public static void main(String[] args) {
-    //     StudentDbUtil studentDbUtil = new StudentDbUtil();
-    //     try{
-    //         List<Student> students = studentDbUtil.searchStudents("test");
-    //     } catch (Exception e){
-
-    //     }
-	// }	
+//	public static void main(String[] args) {
+//        StudentDbUtil studentDbUtil = new StudentDbUtil();
+//        try{
+//            List<Student> students = studentDbUtil.searchStudents("test");
+//            for (Student student : students) {
+//            	System.out.println(student.getFirstName());
+//            }
+//        } catch (Exception e){
+//
+//        }
+//	}	
 	
 }
