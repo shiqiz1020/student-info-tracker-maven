@@ -5,7 +5,8 @@ target=com.shiqi.web.StudentDbUtil
 
 classpath=target/classes
 
-symbolic.method=StudentDbUtil.searchStudents(sym)
+#symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym)
+symbolic.method=searchStudents(sym)
 
 search.multiple_errors=true
 

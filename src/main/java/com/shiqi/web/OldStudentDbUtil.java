@@ -8,56 +8,47 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 
-import com.symbolic.db.SymbolicResultSet;
-import com.symbolic.db.SymbolicDataSource;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
 
-public class StudentDbUtil {
+public class OldStudentDbUtil {
 	private DataSource dataSource;
-	private SymbolicDataSource symDataSource;
+	private Driver driver;
+
+//	public StudentDbUtil() {
+//	 	dataSource = null;
+//	}
 	
-	public StudentDbUtil() {
-	 	dataSource = null;
-	}
-	
-	public StudentDbUtil(DataSource dataSource) {
-		// initialize JPF
+	public StudentDbUtil(DataSource theDataSource) {
 		String[] args = {"dbutil.jpf"};
 		Config config = JPF.createConfig(args);
 		JPF jpf = new JPF(config);
 		SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
 		jpf.addListener(listener);
-//		
-		// set DataSource
-		this.dataSource  = dataSource;
 		
-		// create symbolic DataSource
-		this.symDataSource = new SymbolicDataSource(this.dataSource);
+		this.dataSource  = theDataSource;
 		
-		// start JPF
 		jpf.run();
 	}
 	
 	public List<Student> getStudents() throws Exception {
 		List<Student> students = new ArrayList<>();
 		
-//		Connection realConnection = null;
-//		Statement stmt = null;
-//		ResultSet rs = null;
+		Connection connection = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		
 		try {
 			// get connection
-			Connection symConnection = symDataSource.getConnection();
+			connection = dataSource.getConnection();
 			
 			// create sql statement
 			String sql = "SELECT * FROM student ORDER BY last_name";
-			Statement stmt = symConnection.createStatement();
+			stmt = connection.createStatement();
 			
 			// execute query
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			
 			// process result set
 			while (rs.next()) {
@@ -77,7 +68,7 @@ public class StudentDbUtil {
 			return students;
 		} finally {
 			// close JDBC objects
-//			close(realConnection, stmt, rs);
+			close(connection, stmt, rs);
 			this.searchStudents("key");
 		}
 	}
@@ -151,13 +142,12 @@ public class StudentDbUtil {
 			
 			// execute statement
 			rs = stmt.executeQuery();
-			SymbolicResultSet symRs = new SymbolicResultSet(rs);
 			
 			// retrieve data from result set row
-			if (symRs.next()) {
-				String firstName = symRs.getString("first_name");
-				String lastName = symRs.getString("last_name");
-				String email = symRs.getString("email");
+			if (rs.next()) {
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String email = rs.getString("email");
 				
 				// use the studentId during construction
 				student = new Student(studentId, firstName, lastName, email);
@@ -291,17 +281,17 @@ public class StudentDbUtil {
         }
     }
 	
-	public static void main(String[] args) {
-        StudentDbUtil studentDbUtil = new StudentDbUtil(null);
-        
-        try{
-            List<Student> students = studentDbUtil.searchStudents("test");
-//            for (Student student : students) {
-//            	System.out.println(student.getFirstName());
-//            }
-        } catch (Exception e){
-
-        }
-	}	
+//	public static void main(String[] args) {
+//        StudentDbUtil studentDbUtil = new StudentDbUtil();
+//        
+//        try{
+//            List<Student> students = studentDbUtil.searchStudents("test");
+////            for (Student student : students) {
+////            	System.out.println(student.getFirstName());
+////            }
+//        } catch (Exception e){
+//
+//        }
+//	}	
 	
 }
