@@ -9,9 +9,6 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 public class SymbolicDataSource implements DataSource {
-//	private DataSource dataSource;
-//	private Connection realConn;
-//	private SymbolicConnection symConn;
 	
 	public SymbolicDataSource() {
 		
@@ -61,10 +58,6 @@ public class SymbolicDataSource implements DataSource {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		// TODO Auto-generated method stub
-//		if (this.dataSource != null) {
-//			this.realConn = this.dataSource.getConnection();
-//		}
 		return new SymbolicConnection();
 	}
 
@@ -73,10 +66,7 @@ public class SymbolicDataSource implements DataSource {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-//	public Connection getRealConnection() throws SQLException {
-//		return this.realConn;
-//	}
+
 	
 //	public Connection getSymbolicConnection() throws SQLException {
 //		return this.symConn;

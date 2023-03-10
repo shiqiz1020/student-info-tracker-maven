@@ -9,32 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolicStatement implements Statement {
-//	Statement realStmt;
-//	Map<String, ResultSet> realQueryResults;
 	Map<String, SymbolicResultSet> symQueryResults;
 	
 	public SymbolicStatement() {
-//		this.realStmt = realStmt;
-//		this.realQueryResults = new HashMap<>();
 		this.symQueryResults = new HashMap<>();
 	}
 	
 	@Override
 	public ResultSet executeQuery(String arg0) throws SQLException {
-//		ResultSet realRs = null;
-//		if (this.realStmt != null) {
-//			realRs = this.realStmt.executeQuery(arg0);
-//		}
 		SymbolicResultSet symRs = new SymbolicResultSet();
-		
-//		this.realQueryResults.put(arg0, realRs);
 		this.symQueryResults.put(arg0, symRs);
 		return symRs;
 	}
 	
-//	public ResultSet getRealResultSet(String sql) {
-//		return this.realQueryResults.get(sql);
-//	}
 	
 //	public SymbolicResultSet getSymResultSet(String sql) {
 //		return this.symQueryResults.get(sql);

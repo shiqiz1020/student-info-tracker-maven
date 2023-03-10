@@ -36,17 +36,13 @@ public class SymbolicResultSet implements ResultSet {
 	@Symbolic("true")
 	private Boolean symbolicBoolean;
 	
-//	private ResultSet rs;
 	
 	public SymbolicResultSet() {
-//		this.rs = resultSet;
+
 	}
 	
 	@Override
 	public int getInt(String columnLabel) throws SQLException {
-//		if (this.rs != null) {
-//			return rs.getInt(columnLabel);
-//		}
 		if (symbolicInt != null) {
 			return symbolicInt;
 		}
@@ -55,9 +51,6 @@ public class SymbolicResultSet implements ResultSet {
 	
 	@Override
 	public String getString(String columnLabel) throws SQLException {
-//		if (this.rs != null) {
-//			return rs.getString(columnLabel);
-//		}
 		if (symbolicString != null) {
 			return symbolicString;
 		}
@@ -66,9 +59,6 @@ public class SymbolicResultSet implements ResultSet {
 
 	@Override
 	public boolean next() throws SQLException {
-//		if (this.rs != null) {
-//			return rs.next();
-//		}
 		if (symbolicBoolean != null) {
 			return symbolicBoolean;
 		}

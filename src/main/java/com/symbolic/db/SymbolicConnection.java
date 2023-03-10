@@ -22,26 +22,14 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class SymbolicConnection implements Connection {
-//	Connection realConn;
-//	List<Statement> realStatements;
 	List<SymbolicStatement> symStatements;
 	
 	public SymbolicConnection() {
-//		this.realConn = dataSourceConnection;
-//		this.realStatements = new ArrayList<Statement>();
 		this.symStatements = new ArrayList<SymbolicStatement>();
 	}
 
 	@Override
 	public Statement createStatement() throws SQLException {
-//		Statement realStmt;
-//		if (this.realConn != null) {
-//			realStmt = this.realConn.createStatement();
-//		} else {
-//			realStmt = null;
-//		}
-//		this.realStatements.add(realStmt);
-		
 		SymbolicStatement symStmt = new SymbolicStatement();
 		this.symStatements.add(symStmt);
 		return symStmt;
@@ -49,13 +37,8 @@ public class SymbolicConnection implements Connection {
 	
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		// TODO Auto-generated method stub
 		return new SymbolicPreparedStatement(sql);
 	}
-	
-//	public Statement getRealStatement() {
-//		return this.realStatements.get(this.realStatements.size() - 1);
-//	}
 	
 //	public Statement getSymStatement() {
 //		return this.symStatements.get(this.symStatements.size() - 1);
