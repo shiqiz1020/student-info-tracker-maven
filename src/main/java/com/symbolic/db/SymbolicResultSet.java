@@ -28,36 +28,51 @@ import gov.nasa.jpf.symbc.Symbolic;
 public class SymbolicResultSet implements ResultSet {
 	
 	@Symbolic("true")
-	private int symbolicInt;
+	private Integer symbolicInt;
 	
 	@Symbolic("true")
 	private String symbolicString;
 	
 	@Symbolic("true")
-	private boolean symbolicBoolean;
+	private Boolean symbolicBoolean;
 	
-	private ResultSet rs;
+//	private ResultSet rs;
 	
-	public SymbolicResultSet(ResultSet resultSet) {
-		this.rs = resultSet;
+	public SymbolicResultSet() {
+//		this.rs = resultSet;
 	}
 	
 	@Override
 	public int getInt(String columnLabel) throws SQLException {
-		symbolicInt = rs.getInt(columnLabel);
-		return symbolicInt;
+//		if (this.rs != null) {
+//			return rs.getInt(columnLabel);
+//		}
+		if (symbolicInt != null) {
+			return symbolicInt;
+		}
+		return 0;
 	}
 	
 	@Override
 	public String getString(String columnLabel) throws SQLException {
-		symbolicString = rs.getString(columnLabel);
-		return symbolicString;
+//		if (this.rs != null) {
+//			return rs.getString(columnLabel);
+//		}
+		if (symbolicString != null) {
+			return symbolicString;
+		}
+		return null;
 	}
 
 	@Override
 	public boolean next() throws SQLException {
-		symbolicBoolean = rs.next();
-		return symbolicBoolean;
+//		if (this.rs != null) {
+//			return rs.next();
+//		}
+		if (symbolicBoolean != null) {
+			return symbolicBoolean;
+		}
+		return false;
 	}
 	
 	@Override

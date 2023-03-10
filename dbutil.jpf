@@ -14,6 +14,8 @@ symbolic.debug=true
 
 symbolic.dp=choco
 
+symbolic.lazy=on
+
 #log.level=finer
 log.level=fine
 log.fine=gov.nasa.jpf.vm.ClassInfo

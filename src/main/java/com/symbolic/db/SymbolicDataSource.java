@@ -9,14 +9,12 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 public class SymbolicDataSource implements DataSource {
-	private DataSource dataSource;
-	private Connection realConn;
-	private Connection symConn;
+//	private DataSource dataSource;
+//	private Connection realConn;
+//	private SymbolicConnection symConn;
 	
-	public SymbolicDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.realConn = null;
-		this.symConn = null;
+	public SymbolicDataSource() {
+		
 	}
 
 	@Override
@@ -64,11 +62,10 @@ public class SymbolicDataSource implements DataSource {
 	@Override
 	public Connection getConnection() throws SQLException {
 		// TODO Auto-generated method stub
-		if (this.dataSource != null) {
-			this.realConn = this.dataSource.getConnection();
-		}
-		this.symConn = new SymbolicConnection(this.realConn);
-		return this.symConn;
+//		if (this.dataSource != null) {
+//			this.realConn = this.dataSource.getConnection();
+//		}
+		return new SymbolicConnection();
 	}
 
 	@Override
@@ -77,12 +74,12 @@ public class SymbolicDataSource implements DataSource {
 		return null;
 	}
 	
-	public Connection getRealConnection() throws SQLException {
-		return this.realConn;
-	}
+//	public Connection getRealConnection() throws SQLException {
+//		return this.realConn;
+//	}
 	
-	public Connection getSymbolicConnection() throws SQLException {
-		return this.symConn;
-	}
+//	public Connection getSymbolicConnection() throws SQLException {
+//		return this.symConn;
+//	}
 
 }

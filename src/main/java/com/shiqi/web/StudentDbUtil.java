@@ -9,7 +9,10 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.symbolic.db.SymbolicResultSet;
+import com.symbolic.db.SymbolicStatement;
+import com.symbolic.db.SymbolicConnection;
 import com.symbolic.db.SymbolicDataSource;
+import com.symbolic.db.SymbolicPreparedStatement;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
@@ -25,20 +28,17 @@ public class StudentDbUtil {
 	
 	public StudentDbUtil(DataSource dataSource) {
 		// initialize JPF
-		String[] args = {"dbutil.jpf"};
-		Config config = JPF.createConfig(args);
-		JPF jpf = new JPF(config);
-		SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
-		jpf.addListener(listener);
-//		
-		// set DataSource
-		this.dataSource  = dataSource;
+//		String[] args = {"dbutil.jpf"};
+//		Config config = JPF.createConfig(args);
+//		JPF jpf = new JPF(config);
+//		SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
+//		jpf.addListener(listener);
 		
 		// create symbolic DataSource
-		this.symDataSource = new SymbolicDataSource(this.dataSource);
+		this.symDataSource = new SymbolicDataSource();
 		
 		// start JPF
-		jpf.run();
+//		jpf.run();
 	}
 	
 	public List<Student> getStudents() throws Exception {
@@ -50,14 +50,14 @@ public class StudentDbUtil {
 		
 		try {
 			// get connection
-			Connection symConnection = symDataSource.getConnection();
+			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
 			
 			// create sql statement
 			String sql = "SELECT * FROM student ORDER BY last_name";
-			Statement stmt = symConnection.createStatement();
+			SymbolicStatement stmt = (SymbolicStatement) symConnection.createStatement();
 			
 			// execute query
-			ResultSet rs = stmt.executeQuery(sql);
+			SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery(sql);
 			
 			// process result set
 			while (rs.next()) {
@@ -78,7 +78,7 @@ public class StudentDbUtil {
 		} finally {
 			// close JDBC objects
 //			close(realConnection, stmt, rs);
-			this.searchStudents("key");
+//			this.searchStudents("key");
 		}
 	}
 
@@ -99,16 +99,16 @@ public class StudentDbUtil {
 	}
 
 	public void addStudent(Student newStudent) throws Exception {
-		Connection connection = null;
-		PreparedStatement stmt = null;
+//		Connection connection = null;
+//		PreparedStatement stmt = null;
 		
 		try {
 			// get db connection
-			connection = dataSource.getConnection();
+			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
 			
 			// create sql for insert
 			String sql = "INSERT INTO student " + "(first_name, last_name, email)" + "values (?, ?, ?)";
-			stmt = connection.prepareStatement(sql);
+			SymbolicPreparedStatement stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
 		
 			// set param values for student
 			stmt.setString(1, newStudent.getFirstName());
@@ -120,7 +120,7 @@ public class StudentDbUtil {
 		
 		} finally {
 			// clean up jdbc objects
-			close(connection, stmt, null);
+//			close(connection, stmt, null);
 		}
 	}
 	
@@ -128,9 +128,10 @@ public class StudentDbUtil {
 
 		Student student = null;
 		
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+//		Connection connection = null;
+//		PreparedStatement stmt = null;
+//		ResultSet rs = null;
+		
 		int studentId;
 		
 		try {
@@ -138,26 +139,25 @@ public class StudentDbUtil {
 			studentId = Integer.parseInt(sid);
 			
 			// get connection to database
-			connection = dataSource.getConnection();
+			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
 			
 			// create sql to get selected student
 			String sql = "SELECT * FROM student WHERE id=?";
 			
 			// create prepared statement
-			stmt = connection.prepareStatement(sql);
+			SymbolicPreparedStatement stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
 			
 			// set params
 			stmt.setInt(1, studentId);
 			
 			// execute statement
-			rs = stmt.executeQuery();
-			SymbolicResultSet symRs = new SymbolicResultSet(rs);
+			SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
 			
 			// retrieve data from result set row
-			if (symRs.next()) {
-				String firstName = symRs.getString("first_name");
-				String lastName = symRs.getString("last_name");
-				String email = symRs.getString("email");
+			if (rs.next()) {
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String email = rs.getString("email");
 				
 				// use the studentId during construction
 				student = new Student(studentId, firstName, lastName, email);
@@ -170,17 +170,17 @@ public class StudentDbUtil {
 		}
 		finally {
 			// clean up JDBC objects
-			close(connection, stmt, rs);
+//			close(connection, stmt, rs);
 		}
 	}
 	
 	public void updateStudent(Student student) throws Exception {	
-		Connection connection = null;
-		PreparedStatement stmt = null;
+//		Connection connection = null;
+//		PreparedStatement stmt = null;
 
 		try {
 			// get db connection
-			connection = dataSource.getConnection();
+			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
 			
 			// create SQL update statement
 			String sql = "UPDATE student "
@@ -188,7 +188,7 @@ public class StudentDbUtil {
 						+ "WHERE id=?";
 			
 			// prepare statement
-			stmt = connection.prepareStatement(sql);
+			SymbolicPreparedStatement stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
 			
 			// set params
 			stmt.setString(1, student.getFirstName());
@@ -201,26 +201,24 @@ public class StudentDbUtil {
 		}
 		finally {
 		// clean up JDBC objects
-			close(connection, stmt, null);
+//			close(connection, stmt, null);
 		}
 	}
 	
 	public void deleteStudent(String sid) throws Exception {
-		Connection connection = null;
-		PreparedStatement stmt = null;
 		
 		try {
 			// convert student id to int
 			int studentId = Integer.parseInt(sid);
 			
 			// get connection to database
-			connection = dataSource.getConnection();
+			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
 			
 			// create sql to delete student
 			String sql = "DELETE FROM student WHERE id=?";
 			
 			// prepare statement
-			stmt = connection.prepareStatement(sql);
+			SymbolicPreparedStatement stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
 			
 			// set params
 			stmt.setInt(1, studentId);
@@ -230,28 +228,30 @@ public class StudentDbUtil {
 		}
 		finally {
 			// clean up JDBC code
-			close(connection, stmt, null);
+//			close(connection, stmt, null);
 		}	
 	}
 	
 	public List<Student> searchStudents(String searchName)  throws Exception {
         List<Student> students = new ArrayList<>();
         
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+//        Connection connection = null;
+        SymbolicPreparedStatement stmt = null;
+//        ResultSet rs = null;
         
         try {
             
             // get connection to database
-        	connection = dataSource.getConnection();
+        	SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
             
             // only search by name if theSearchName is not empty
             if (searchName != null && searchName.trim().length() > 0) {
                 // create sql to search for students by name
                 String sql = "SELECT * FROM student WHERE lower(first_name) LIKE ? OR lower(last_name) LIKE ?";
+                
                 // create prepared statement
-                stmt = connection.prepareStatement(sql);
+                stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                
                 // set params
                 String searchNameLike = "%" + searchName.toLowerCase() + "%";
                 stmt.setString(1, searchNameLike);
@@ -261,11 +261,11 @@ public class StudentDbUtil {
                 // create sql to get all students
                 String sql = "SELECT * FROM student ORDER BY last_name";
                 // create prepared statement
-                stmt = connection.prepareStatement(sql);
+                stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
             }
             
             // execute statement
-            rs = stmt.executeQuery();
+            SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
             
             // retrieve data from result set row
             while (rs.next()) {
@@ -287,7 +287,7 @@ public class StudentDbUtil {
         }
         finally {
             // clean up JDBC objects
-            close(connection, stmt, rs);
+//            close(connection, stmt, rs);
         }
     }
 	
