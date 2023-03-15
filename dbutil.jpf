@@ -5,7 +5,8 @@ target=com.shiqi.web.StudentDbUtil
 
 classpath=target/classes
 
-symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym#sym),com.symbolic.db.SymbolicResultSet.getInt(sym),com.symbolic.db.SymbolicResultSet.next(),com.symbolic.db.SymbolicResultSet.getString(sym)
+#symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym),com.symbolic.db.SymbolicResultSet.getInt(sym),com.symbolic.db.SymbolicResultSet.next(),com.symbolic.db.SymbolicResultSet.getString(sym)
+symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym),com.symbolic.db.SymbolicResultSet.next()
 
 search.multiple_errors=true
 

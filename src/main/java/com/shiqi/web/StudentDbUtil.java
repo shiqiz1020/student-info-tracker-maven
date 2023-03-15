@@ -1,9 +1,9 @@
 package com.shiqi.web;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+//import java.sql.Connection;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -14,37 +14,23 @@ import com.symbolic.db.SymbolicConnection;
 import com.symbolic.db.SymbolicDataSource;
 import com.symbolic.db.SymbolicPreparedStatement;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
+//import gov.nasa.jpf.Config;
+//import gov.nasa.jpf.JPF;
+//import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
 import gov.nasa.jpf.symbc.Debug;
-import gov.nasa.jpf.symbc.Symbolic;
+//import gov.nasa.jpf.symbc.Symbolic;
 
 public class StudentDbUtil {
-	private DataSource dataSource;
+//	private DataSource dataSource;
 	public SymbolicDataSource symDataSource;
 	
 	public StudentDbUtil(DataSource dataSource) {
-		// initialize JPF
-//		String[] args = {"dbutil.jpf"};
-//		Config config = JPF.createConfig(args);
-//		JPF jpf = new JPF(config);
-//		SymbolicSequenceListener listener = new SymbolicSequenceListener(config, jpf);
-//		jpf.addListener(listener);
-		
 		// create symbolic DataSource
 		this.symDataSource = new SymbolicDataSource();
-		
-		// start JPF
-//		jpf.run();
 	}
 	
 	public List<Student> getStudents() throws Exception {
 		List<Student> students = new ArrayList<>();
-		
-//		Connection realConnection = null;
-//		Statement stmt = null;
-//		ResultSet rs = null;
 		
 		try {
 			// get connection
@@ -71,35 +57,13 @@ public class StudentDbUtil {
 				// add to student list
 				students.add(newStudent);
 			}
-
 			return students;
 		} finally {
-			// close JDBC objects
-//			close(realConnection, stmt, rs);
-//			this.searchStudents("key");
-		}
-	}
-
-	private void close(Connection conn, Statement stmt, ResultSet rs) {
-		try {
-			if (rs != null) {
-				rs.close();
-			}
-			if (stmt != null) {
-				stmt.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 	}
 
 	public void addStudent(Student newStudent) throws Exception {
-//		Connection connection = null;
-//		PreparedStatement stmt = null;
-		
 		try {
 			// get db connection
 			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
@@ -117,19 +81,12 @@ public class StudentDbUtil {
 			stmt.execute();
 		
 		} finally {
-			// clean up jdbc objects
-//			close(connection, stmt, null);
+			
 		}
 	}
 	
 	public Student getStudent(String sid) throws Exception {
-
 		Student student = null;
-		
-//		Connection connection = null;
-//		PreparedStatement stmt = null;
-//		ResultSet rs = null;
-		
 		int studentId;
 		
 		try {
@@ -165,17 +122,12 @@ public class StudentDbUtil {
 			}				
 			
 			return student;
-		}
-		finally {
-			// clean up JDBC objects
-//			close(connection, stmt, rs);
+		} finally {
+			
 		}
 	}
 	
 	public void updateStudent(Student student) throws Exception {	
-//		Connection connection = null;
-//		PreparedStatement stmt = null;
-
 		try {
 			// get db connection
 			SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
@@ -196,15 +148,12 @@ public class StudentDbUtil {
 			
 			// execute SQL statement
 			stmt.execute();
-		}
-		finally {
-		// clean up JDBC objects
-//			close(connection, stmt, null);
+		} finally {
+			
 		}
 	}
 	
 	public void deleteStudent(String sid) throws Exception {
-		
 		try {
 			// convert student id to int
 			int studentId = Integer.parseInt(sid);
@@ -223,17 +172,15 @@ public class StudentDbUtil {
 			
 			// execute sql statement
 			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		finally {
-			// clean up JDBC code
-//			close(connection, stmt, null);
-		}	
 	}
 	
-	public List<Student> searchStudents(String searchName, boolean next)  throws Exception {
+	public List<Student> searchStudents(String searchName)  throws Exception {
         try {
         	List<Student> students = new ArrayList<>();
-            SymbolicPreparedStatement stmt;;
+            SymbolicPreparedStatement stmt;
             
             // get connection to database
         	SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
@@ -263,8 +210,7 @@ public class StudentDbUtil {
             SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
          
             // retrieve data from result set row
-            if (rs.next()) {
-                
+            while (rs.next()) {
                 // retrieve data from result set row
                 int id = rs.getInt("id");
                 String firstName = rs.getString("first_name");
@@ -277,17 +223,10 @@ public class StudentDbUtil {
                 
                 // add it to the list of students
                 students.add(newStudent);   
-                System.out.println("IFXXXXXXXX");
             } 
-            else {
-            	System.out.println("ELSEXXXXXXX");
-            }
-            
             return students;
         }
         finally {
-            // clean up JDBC objects
-//            close(connection, stmt, rs);
         }
     }
 	
@@ -295,9 +234,7 @@ public class StudentDbUtil {
         StudentDbUtil studentDbUtil = new StudentDbUtil(null);
         
         try{
-        	SymbolicConnection symConnection = (SymbolicConnection) studentDbUtil.symDataSource.getConnection();
-            List<Student> students = studentDbUtil.searchStudents("test", true);
-//        	List<Student> students = studentDbUtil.searchStudents(1, 1);
+            List<Student> students = studentDbUtil.searchStudents("test");
         } catch (Exception e){
 
         }

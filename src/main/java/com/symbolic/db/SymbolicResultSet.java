@@ -36,6 +36,7 @@ public class SymbolicResultSet implements ResultSet {
 //	@Symbolic("true")
 	private Boolean symbolicBoolean;
 	
+	private boolean hasExplored = false;
 	
 	public SymbolicResultSet() {
 
@@ -67,6 +68,13 @@ public class SymbolicResultSet implements ResultSet {
 //			return symbolicBoolean;
 //		}
 //		return false;
+		
+		if (hasExplored) {
+			System.out.println("\nISNEXT: FALSE\n");
+			return false;
+		}
+		hasExplored = true;
+		System.out.println("\nISNEXT: TRUE\n");
 		
 		symbolicBoolean = Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
 		return symbolicBoolean;
