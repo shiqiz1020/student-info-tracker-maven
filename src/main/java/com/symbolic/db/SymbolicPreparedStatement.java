@@ -36,19 +36,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		this.preparedStatements = new HashMap<>();
 	}
 	
-	@Override
-	public boolean execute() throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
-		this.symRs = symRs;
-		return symRs instanceof ResultSet ? true : false;
-	}
-	
-	@Override
-	public ResultSet executeQuery() throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
-		this.symRs = symRs;
-		
-		// concatenate full SQL statement
+	private String concatenatePreparedStatement() {
 		String fullSQL = "";
 		String[] splitSQL = this.sql.split("\\s");
 		int counter = 0;
@@ -60,9 +48,10 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 				fullSQL = fullSQL.concat(" " + temp);
 			}
 		}
-//		
-//		this.symQueryResults.put(fullSQL, symRs);
-		
+		return fullSQL;
+	}
+	
+	private void printSQL(String fullSQL) {
 		// print out unfilled SQL prepared statement
 		System.out.println("\n===== UNFILLED SQL STATEMENT =====");
 		System.out.println(this.sql);
@@ -79,6 +68,35 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(fullSQL);
 		System.out.println();
+	}
+	
+	@Override
+	public boolean execute() throws SQLException {
+		SymbolicResultSet symRs = new SymbolicResultSet();
+		this.symRs = symRs;
+		
+		// concatenate full SQL statement
+		String fullSQL = concatenatePreparedStatement();
+//		this.symQueryResults.put(fullSQL, symRs);
+		
+		// print SQL
+		printSQL(fullSQL);
+		
+		return symRs instanceof ResultSet ? true : false;
+	}
+	
+	@Override
+	public ResultSet executeQuery() throws SQLException {
+		SymbolicResultSet symRs = new SymbolicResultSet();
+		this.symRs = symRs;
+		
+		// concatenate full SQL statement
+		String fullSQL = concatenatePreparedStatement();
+		
+//		this.symQueryResults.put(fullSQL, symRs);
+		
+		// print SQL
+		printSQL(fullSQL);
 		
 		return symRs;
 	}
@@ -87,22 +105,11 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	public ResultSet executeQuery(String sql) throws SQLException {
 		SymbolicResultSet symRs = new SymbolicResultSet();
 		this.symRs = symRs;
-//		this.symQueryResults.put(sql, symRs);
-//		
-//		// print out unfilled SQL prepared statement
-//		System.out.println("Unfilled SQL statement: " + this.sql);
-//		System.out.println();
-//		
-//		// print out prepared statement parameters
-//		System.out.println("Prepared statement parameters: ");
-//		for (int index : this.preparedStatements.keySet()) {
-//			System.out.println(index + ": " + this.preparedStatements.get(index));
-//		}
-//		System.out.println();
-//		
-//		// print out full SQL query statement
-//		System.out.println("Current SQL query statement: " + sql);
-//		System.out.println();
+				
+		this.symQueryResults.put(sql, symRs);
+				
+		// print SQL
+		printSQL(sql);
 		
 		return symRs;
 	}

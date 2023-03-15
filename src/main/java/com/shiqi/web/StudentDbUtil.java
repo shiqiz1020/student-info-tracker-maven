@@ -24,23 +24,6 @@ public class StudentDbUtil {
 	private DataSource dataSource;
 	public SymbolicDataSource symDataSource;
 	
-//	public StudentDbUtil() {
-//	 	dataSource = null;
-//	}
-	
-//	public void test(int x, int y) {
-//		int z=x-y;
-////		 z = Debug.makeSymbolicInteger(Debug.getSymbolicIntegerValue(z));
-//		
-//		if (x > y && y > 0) {
-//	        if (z > 0) {
-//	            System.out.println("z>0");
-//	        } else {
-//	            System.out.println("z<=0");
-//	        }
-//		}
-//	}	
-	
 	public StudentDbUtil(DataSource dataSource) {
 		// initialize JPF
 //		String[] args = {"dbutil.jpf"};
@@ -248,17 +231,9 @@ public class StudentDbUtil {
 	}
 	
 	public List<Student> searchStudents(String searchName, boolean next)  throws Exception {
-        List<Student> students = new ArrayList<>();
-        
-//        if (next) {
-//        	System.out.println("sfsdfsdfs");
-//        } else {
-//        	System.out.println("else");
-//        }
-        
-        SymbolicPreparedStatement stmt = null;
-        
         try {
+        	List<Student> students = new ArrayList<>();
+            SymbolicPreparedStatement stmt;;
             
             // get connection to database
         	SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();

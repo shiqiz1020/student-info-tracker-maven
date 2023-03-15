@@ -19,6 +19,12 @@ public class SymbolicStatement implements Statement {
 	public ResultSet executeQuery(String arg0) throws SQLException {
 		SymbolicResultSet symRs = new SymbolicResultSet();
 		this.symQueryResults.put(arg0, symRs);
+		
+		// print out full SQL query statement
+		System.out.println("\n===== FULL SQL STATEMENT =====");
+		System.out.println(arg0);
+		System.out.println();
+		
 		return symRs;
 	}
 	
