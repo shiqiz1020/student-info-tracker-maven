@@ -17,14 +17,29 @@ import com.symbolic.db.SymbolicPreparedStatement;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
+import gov.nasa.jpf.symbc.Debug;
+import gov.nasa.jpf.symbc.Symbolic;
 
 public class StudentDbUtil {
 	private DataSource dataSource;
-	private SymbolicDataSource symDataSource;
+	public SymbolicDataSource symDataSource;
 	
-	public StudentDbUtil() {
-	 	dataSource = null;
-	}
+//	public StudentDbUtil() {
+//	 	dataSource = null;
+//	}
+	
+//	public void test(int x, int y) {
+//		int z=x-y;
+////		 z = Debug.makeSymbolicInteger(Debug.getSymbolicIntegerValue(z));
+//		
+//		if (x > y && y > 0) {
+//	        if (z > 0) {
+//	            System.out.println("z>0");
+//	        } else {
+//	            System.out.println("z<=0");
+//	        }
+//		}
+//	}	
 	
 	public StudentDbUtil(DataSource dataSource) {
 		// initialize JPF
@@ -232,12 +247,16 @@ public class StudentDbUtil {
 		}	
 	}
 	
-	public List<Student> searchStudents(String searchName)  throws Exception {
+	public List<Student> searchStudents(String searchName, boolean next)  throws Exception {
         List<Student> students = new ArrayList<>();
         
-//        Connection connection = null;
+//        if (next) {
+//        	System.out.println("sfsdfsdfs");
+//        } else {
+//        	System.out.println("else");
+//        }
+        
         SymbolicPreparedStatement stmt = null;
-//        ResultSet rs = null;
         
         try {
             
@@ -253,26 +272,28 @@ public class StudentDbUtil {
                 stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
                 
                 // set params
-                String searchNameLike = "%" + searchName.toLowerCase() + "%";
+//                String searchNameLike = "%" + searchName.toLowerCase() + "%";
+                String searchNameLike = "%" + searchName + "%";
+                searchNameLike = Debug.makeSymbolicString(Debug.getSymbolicStringValue(searchNameLike));
                 stmt.setString(1, searchNameLike);
                 stmt.setString(2, searchNameLike);
-                
             } else {
                 // create sql to get all students
                 String sql = "SELECT * FROM student ORDER BY last_name";
                 // create prepared statement
                 stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
             }
-            
+                
             // execute statement
             SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
-            
+         
             // retrieve data from result set row
-            while (rs.next()) {
+            if (rs.next()) {
                 
                 // retrieve data from result set row
                 int id = rs.getInt("id");
                 String firstName = rs.getString("first_name");
+//                firstName = Debug.makeSymbolicString(Debug.getSymbolicStringValue(firstName));
                 String lastName = rs.getString("last_name");
                 String email = rs.getString("email");
                 
@@ -280,7 +301,11 @@ public class StudentDbUtil {
                 Student newStudent = new Student(id, firstName, lastName, email);
                 
                 // add it to the list of students
-                students.add(newStudent);            
+                students.add(newStudent);   
+                System.out.println("IFXXXXXXXX");
+            } 
+            else {
+            	System.out.println("ELSEXXXXXXX");
             }
             
             return students;
@@ -295,10 +320,9 @@ public class StudentDbUtil {
         StudentDbUtil studentDbUtil = new StudentDbUtil(null);
         
         try{
-            List<Student> students = studentDbUtil.searchStudents("test");
-//            for (Student student : students) {
-//            	System.out.println(student.getFirstName());
-//            }
+        	SymbolicConnection symConnection = (SymbolicConnection) studentDbUtil.symDataSource.getConnection();
+            List<Student> students = studentDbUtil.searchStudents("test", true);
+//        	List<Student> students = studentDbUtil.searchStudents(1, 1);
         } catch (Exception e){
 
         }

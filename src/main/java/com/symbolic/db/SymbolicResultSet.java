@@ -22,18 +22,18 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Map;
 
-//import gov.nasa.jpf.symbc.Debug;
+import gov.nasa.jpf.symbc.Debug;
 import gov.nasa.jpf.symbc.Symbolic;
 
 public class SymbolicResultSet implements ResultSet {
 	
-	@Symbolic("true")
+//	@Symbolic("true")
 	private Integer symbolicInt;
 	
-	@Symbolic("true")
+//	@Symbolic("true")
 	private String symbolicString;
 	
-	@Symbolic("true")
+//	@Symbolic("true")
 	private Boolean symbolicBoolean;
 	
 	
@@ -43,26 +43,33 @@ public class SymbolicResultSet implements ResultSet {
 	
 	@Override
 	public int getInt(String columnLabel) throws SQLException {
-		if (symbolicInt != null) {
-			return symbolicInt;
-		}
-		return 0;
+//		if (symbolicInt != null) {
+//			return symbolicInt;
+//		}
+//		return 0;
+		symbolicInt = Debug.makeSymbolicInteger("symbolicResultSetInt");
+		return symbolicInt;
 	}
 	
 	@Override
 	public String getString(String columnLabel) throws SQLException {
-		if (symbolicString != null) {
-			return symbolicString;
-		}
-		return null;
+//		if (symbolicString != null) {
+//			return symbolicString;
+//		}
+//		return null;
+		symbolicString = Debug.makeSymbolicString("symbolicResultSetString");
+		return symbolicString;
 	}
 
 	@Override
 	public boolean next() throws SQLException {
-		if (symbolicBoolean != null) {
-			return symbolicBoolean;
-		}
-		return false;
+//		if (symbolicBoolean != null) {
+//			return symbolicBoolean;
+//		}
+//		return false;
+		
+		symbolicBoolean = Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
+		return symbolicBoolean;
 	}
 	
 	@Override

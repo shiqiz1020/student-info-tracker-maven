@@ -5,24 +5,22 @@ target=com.shiqi.web.StudentDbUtil
 
 classpath=target/classes
 
-#symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym)
-symbolic.method=searchStudents(sym)
+symbolic.method=com.shiqi.web.StudentDbUtil.searchStudents(sym#sym),com.symbolic.db.SymbolicResultSet.getInt(sym),com.symbolic.db.SymbolicResultSet.next(),com.symbolic.db.SymbolicResultSet.getString(sym)
 
 search.multiple_errors=true
 
 symbolic.debug=true
+symbolic.strings = true
+#symbolic.string_dp=automata
+# no_solver, automata
 
 symbolic.dp=choco
 
-symbolic.lazy=on
+symbolic.lazy=true
 
 #log.level=finer
-log.level=fine
-log.fine=gov.nasa.jpf.vm.ClassInfo
+#log.level=fine
+#log.fine=gov.nasa.jpf.vm.ClassInfo
 
-#jpf.report.console.finished=
-
-#listener = .symbc.SymbolicListener
-#listener = .listener.ChoiceTracker
 listener = gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener
 
