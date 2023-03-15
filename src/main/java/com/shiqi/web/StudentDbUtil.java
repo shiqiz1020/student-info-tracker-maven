@@ -234,7 +234,8 @@ public class StudentDbUtil {
 	private void printPC() {
 		System.out.println("\n##################################################");
 		System.out.println("===== SOLVED PATH CONSTRAINT SO FAR =====");
-    	System.out.println(Debug.getSolvedPC());
+//    	System.out.println(Debug.getSolvedPC());
+    	System.out.println(Debug.getPC_prefix_notation());
     	System.out.println("##################################################\n");
 	}
 	
