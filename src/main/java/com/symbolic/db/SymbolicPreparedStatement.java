@@ -52,22 +52,21 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	}
 	
 	private void printSQL(String fullSQL) {
+		System.out.println("\n##################################################");
 		// print out unfilled SQL prepared statement
-		System.out.println("\n===== UNFILLED SQL STATEMENT =====");
+		System.out.println("===== UNFILLED SQL PREPARED STATEMENT =====");
 		System.out.println(this.sql);
-		System.out.println();
 		
 		// print out prepared statement parameters
 		System.out.println("\n===== PREPARED STATEMENT PARAMETERS =====");
 		for (int index : this.preparedStatements.keySet()) {
 			System.out.println(this.preparedStatements.get(index));
 		}
-		System.out.println();
 		
 		// print out full SQL query statement
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(fullSQL);
-		System.out.println();
+		System.out.println("##################################################\n");
 	}
 	
 	@Override

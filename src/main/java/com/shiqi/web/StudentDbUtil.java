@@ -206,15 +206,16 @@ public class StudentDbUtil {
                 stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
             }
                 
+//            printPC();
             // execute statement
             SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
          
             // retrieve data from result set row
             while (rs.next()) {
+            	printPC();
                 // retrieve data from result set row
                 int id = rs.getInt("id");
                 String firstName = rs.getString("first_name");
-//                firstName = Debug.makeSymbolicString(Debug.getSymbolicStringValue(firstName));
                 String lastName = rs.getString("last_name");
                 String email = rs.getString("email");
                 
@@ -229,6 +230,13 @@ public class StudentDbUtil {
         finally {
         }
     }
+	
+	private void printPC() {
+		System.out.println("\n##################################################");
+		System.out.println("===== SOLVED PATH CONSTRAINT SO FAR =====");
+    	System.out.println(Debug.getSolvedPC());
+    	System.out.println("##################################################\n");
+	}
 	
 	public static void main(String[] args) {
         StudentDbUtil studentDbUtil = new StudentDbUtil(null);

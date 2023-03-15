@@ -21,9 +21,11 @@ public class SymbolicStatement implements Statement {
 		this.symQueryResults.put(arg0, symRs);
 		
 		// print out full SQL query statement
+		System.out.println("##################################################");
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(arg0);
 		System.out.println();
+		System.out.println("##################################################");
 		
 		return symRs;
 	}
