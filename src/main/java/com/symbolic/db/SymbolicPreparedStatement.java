@@ -43,9 +43,9 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		for (String temp : splitSQL) {
 			if (temp.equals("?")) {
 				counter += 1;
-				fullSQL = fullSQL.concat(" " + this.preparedStatements.get(counter).toString());
+				fullSQL = fullSQL.concat(this.preparedStatements.get(counter).toString() + " ");
 			} else {
-				fullSQL = fullSQL.concat(" " + temp);
+				fullSQL = fullSQL.concat(temp + " ");
 			}
 		}
 		return fullSQL;
@@ -60,7 +60,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		// print out prepared statement parameters
 		System.out.println("\n===== PREPARED STATEMENT PARAMETERS =====");
 		for (int index : this.preparedStatements.keySet()) {
-			System.out.println(index + ": " + this.preparedStatements.get(index));
+			System.out.println(this.preparedStatements.get(index));
 		}
 		System.out.println();
 		
