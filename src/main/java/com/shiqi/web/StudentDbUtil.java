@@ -186,6 +186,8 @@ public class StudentDbUtil {
         	SymbolicConnection symConnection = (SymbolicConnection) symDataSource.getConnection();
             
             // only search by name if theSearchName is not empty
+//        	int searchNameLength = searchName.trim().length();
+//        	searchNameLength = Debug.makeSymbolicInteger(Debug.getSymbolicIntegerValue(searchNameLength));
             if (searchName != null && searchName.trim().length() > 0) {
                 // create sql to search for students by name
                 String sql = "SELECT * FROM student WHERE lower(first_name) LIKE ? OR lower(last_name) LIKE ?";
@@ -206,13 +208,12 @@ public class StudentDbUtil {
                 stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
             }
                 
-//            printPC();
             // execute statement
             SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
+            printPC();
          
             // retrieve data from result set row
             while (rs.next()) {
-            	printPC();
                 // retrieve data from result set row
                 int id = rs.getInt("id");
                 String firstName = rs.getString("first_name");
@@ -224,6 +225,39 @@ public class StudentDbUtil {
                 
                 // add it to the list of students
                 students.add(newStudent);   
+                
+                if (firstName.equals("Admin")) {
+                	String sql = "SELECT * FROM student WHERE first_name = ? AND last_name = ?";
+                	SymbolicPreparedStatement adminStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                	adminStmt.setString(1, "John");
+                	adminStmt.setString(2, "Doe");
+                	SymbolicResultSet adminRs = (SymbolicResultSet) adminStmt.executeQuery();
+                	printPC();
+                	
+                	if (adminRs.next()) {
+                		sql = "SELECT email FROM student WHERE first_name = John AND last_name LIKE = Doe";
+                    	SymbolicPreparedStatement jdStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                    	SymbolicResultSet jdRs = (SymbolicResultSet) jdStmt.executeQuery();
+                    	printPC();
+                	}
+                } else if (id > 100) {
+                	String sql = "UPDATE student "
+    						+ "SET first_name = ? , last_name = ? , email = ? , included = ? "
+    						+ "WHERE id = ? ";
+    			
+	    			// prepare statement
+	    			SymbolicPreparedStatement expStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+
+//	    			// set params
+	    			expStmt.setString(1, firstName);
+	    			expStmt.setString(2, lastName);
+	    			expStmt.setString(3, email);
+	    			expStmt.setBoolean(4, false);
+	    			expStmt.setInt(5, id);
+	    			
+	    			expStmt.execute();
+	    			printPC();
+                }
             } 
             return students;
         }
@@ -232,8 +266,8 @@ public class StudentDbUtil {
     }
 	
 	private void printPC() {
-		System.out.println("\n##################################################");
-		System.out.println("===== SOLVED PATH CONSTRAINT SO FAR =====");
+//		System.out.println("##################################################");
+		System.out.println("\n===== SOLVED PATH CONSTRAINT SO FAR =====");
 //    	System.out.println(Debug.getSolvedPC());
     	System.out.println(Debug.getPC_prefix_notation());
     	System.out.println("##################################################\n");

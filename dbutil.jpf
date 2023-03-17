@@ -13,6 +13,7 @@ search.multiple_errors=true
 symbolic.debug=true
 symbolic.strings = true
 #symbolic.string_dp=automata
+#symbolic.string_dp=no_solver
 # no_solver, automata
 
 symbolic.dp=choco

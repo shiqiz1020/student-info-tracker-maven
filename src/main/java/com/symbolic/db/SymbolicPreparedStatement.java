@@ -29,7 +29,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	String sql;
 	SymbolicResultSet symRs;
 	Map<Integer, Object> preparedStatements;
-	Map<String, SymbolicResultSet> symQueryResults;
 	
 	public SymbolicPreparedStatement(String sql) {
 		this.sql = sql;
@@ -40,6 +39,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		String fullSQL = "";
 		String[] splitSQL = this.sql.split("\\s");
 		int counter = 0;
+		
 		for (String temp : splitSQL) {
 			if (temp.equals("?")) {
 				counter += 1;
@@ -66,7 +66,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		// print out full SQL query statement
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(fullSQL);
-		System.out.println("##################################################\n");
+//		System.out.println("##################################################\n");
 	}
 	
 	@Override
@@ -76,7 +76,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		
 		// concatenate full SQL statement
 		String fullSQL = concatenatePreparedStatement();
-//		this.symQueryResults.put(fullSQL, symRs);
 		
 		// print SQL
 		printSQL(fullSQL);
@@ -92,8 +91,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		// concatenate full SQL statement
 		String fullSQL = concatenatePreparedStatement();
 		
-//		this.symQueryResults.put(fullSQL, symRs);
-		
 		// print SQL
 		printSQL(fullSQL);
 		
@@ -105,8 +102,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		SymbolicResultSet symRs = new SymbolicResultSet();
 		this.symRs = symRs;
 				
-		this.symQueryResults.put(sql, symRs);
-				
 		// print SQL
 		printSQL(sql);
 		
@@ -116,11 +111,32 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	@Override
 	public void setString(int parameterIndex, String x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
+//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
+//		System.out.println("===== SET PARAMETERS =====");
+//		for (int index : this.preparedStatements.keySet()) {
+//			System.out.println(this.preparedStatements.get(index));
+//		}
 	}
 	
 	@Override
 	public void setInt(int parameterIndex, int x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
+//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
+//		System.out.println("===== SET PARAMETERS =====");
+//		for (int index : this.preparedStatements.keySet()) {
+//			System.out.println(this.preparedStatements.get(index));
+//		}
+	}
+	
+
+	@Override
+	public void setBoolean(int parameterIndex, boolean x) throws SQLException {
+		this.preparedStatements.put(parameterIndex, x);
+//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
+//		System.out.println("===== SET PARAMETERS =====");
+//		for (int index : this.preparedStatements.keySet()) {
+//			System.out.println(this.preparedStatements.get(index));
+//		}
 	}
 
 	@Override
@@ -473,12 +489,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 
 	@Override
 	public void setBlob(int parameterIndex, InputStream inputStream, long length) throws SQLException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setBoolean(int parameterIndex, boolean x) throws SQLException {
 		// TODO Auto-generated method stub
 
 	}

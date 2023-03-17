@@ -23,18 +23,20 @@ import java.util.Calendar;
 import java.util.Map;
 
 import gov.nasa.jpf.symbc.Debug;
-import gov.nasa.jpf.symbc.Symbolic;
+//import gov.nasa.jpf.symbc.Symbolic;
 
 public class SymbolicResultSet implements ResultSet {
 	
 //	@Symbolic("true")
-	private Integer symbolicInt;
-	
-//	@Symbolic("true")
-	private String symbolicString;
-	
-//	@Symbolic("true")
-	private Boolean symbolicBoolean;
+//	private Integer symbolicInt;
+//	
+////	@Symbolic("true")
+//	private String symbolicString;
+//	
+//	private Boolean symbolicBoolean;
+//	
+////	@Symbolic("true")
+//	private Boolean symbolicHasNext;
 	
 	private boolean hasExplored = false;
 	
@@ -48,8 +50,7 @@ public class SymbolicResultSet implements ResultSet {
 //			return symbolicInt;
 //		}
 //		return 0;
-		symbolicInt = Debug.makeSymbolicInteger("symbolicResultSetInt");
-		return symbolicInt;
+		return Debug.makeSymbolicInteger(columnLabel);
 	}
 	
 	@Override
@@ -58,10 +59,14 @@ public class SymbolicResultSet implements ResultSet {
 //			return symbolicString;
 //		}
 //		return null;
-		symbolicString = Debug.makeSymbolicString("symbolicResultSetString");
-		return symbolicString;
+		return Debug.makeSymbolicString(columnLabel);
 	}
-
+	
+	@Override
+	public boolean getBoolean(String columnLabel) throws SQLException {
+		return Debug.makeSymbolicBoolean(columnLabel);
+	}
+	
 	@Override
 	public boolean next() throws SQLException {
 //		if (symbolicBoolean != null) {
@@ -76,8 +81,7 @@ public class SymbolicResultSet implements ResultSet {
 		hasExplored = true;
 		System.out.println("\nISNEXT: TRUE\n");
 		
-		symbolicBoolean = Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
-		return symbolicBoolean;
+		return Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
 	}
 	
 	@Override
@@ -85,6 +89,12 @@ public class SymbolicResultSet implements ResultSet {
 		
 	}
 
+	@Override
+	public boolean getBoolean(int columnIndex) throws SQLException {
+		// TODO Auto-generated method stub
+				return false;
+	}
+	
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
 		// TODO Auto-generated method stub
@@ -215,18 +225,6 @@ public class SymbolicResultSet implements ResultSet {
 	public Blob getBlob(String columnLabel) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean getBoolean(int columnIndex) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean getBoolean(String columnLabel) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
