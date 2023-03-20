@@ -213,7 +213,7 @@ public class StudentDbUtil {
             printPC();
          
             // retrieve data from result set row
-            while (rs.next()) {
+            while (rs.next("next_1")) {
                 // retrieve data from result set row
                 int id = rs.getInt("id");
                 String firstName = rs.getString("first_name");
@@ -227,17 +227,35 @@ public class StudentDbUtil {
                 students.add(newStudent);   
                 
                 if (firstName.equals("Admin")) {
+//                	String sql = "SELECT * FROM student WHERE first_name = ? AND last_name = ?";
+//                	SymbolicPreparedStatement adminStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+//                	adminStmt.setString(1, "John");
+//                	adminStmt.setString(2, "Doe");
+//                	SymbolicResultSet adminRs = (SymbolicResultSet) adminStmt.executeQuery();
+//                	printPC();
+                	
                 	String sql = "SELECT * FROM student WHERE first_name = ? AND last_name = ?";
-                	SymbolicPreparedStatement adminStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
-                	adminStmt.setString(1, "John");
-                	adminStmt.setString(2, "Doe");
-                	SymbolicResultSet adminRs = (SymbolicResultSet) adminStmt.executeQuery();
+                	stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                	stmt.setString(1, "John");
+                	stmt.setString(2, "Doe");
+                	SymbolicResultSet adminRs = (SymbolicResultSet) stmt.executeQuery();
+//                	rs = (SymbolicResultSet) stmt.executeQuery();
                 	printPC();
                 	
-                	if (adminRs.next()) {
+                	
+//                	if (adminRs.next("next_2")) {
+//                		sql = "SELECT email FROM student WHERE first_name = John AND last_name LIKE = Doe";
+//                    	SymbolicPreparedStatement jdStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+//                    	SymbolicResultSet jdRs = (SymbolicResultSet) jdStmt.executeQuery();
+//                    	printPC();
+//                	}
+                	
+                	if (adminRs.next("next_2")) {
+//                	if (rs.next("next_2")) {
                 		sql = "SELECT email FROM student WHERE first_name = John AND last_name LIKE = Doe";
-                    	SymbolicPreparedStatement jdStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
-                    	SymbolicResultSet jdRs = (SymbolicResultSet) jdStmt.executeQuery();
+                		stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                    	SymbolicResultSet jdRs = (SymbolicResultSet) stmt.executeQuery();
+//                		rs = (SymbolicResultSet) stmt.executeQuery();
                     	printPC();
                 	}
                 } else if (id > 100) {
@@ -246,16 +264,16 @@ public class StudentDbUtil {
     						+ "WHERE id = ? ";
     			
 	    			// prepare statement
-	    			SymbolicPreparedStatement expStmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
+                	stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
 
 //	    			// set params
-	    			expStmt.setString(1, firstName);
-	    			expStmt.setString(2, lastName);
-	    			expStmt.setString(3, email);
-	    			expStmt.setBoolean(4, false);
-	    			expStmt.setInt(5, id);
+                	stmt.setString(1, firstName);
+                	stmt.setString(2, lastName);
+                	stmt.setString(3, email);
+                	stmt.setBoolean(4, false);
+                	stmt.setInt(5, id);
 	    			
-	    			expStmt.execute();
+                	stmt.execute();
 	    			printPC();
                 }
             } 

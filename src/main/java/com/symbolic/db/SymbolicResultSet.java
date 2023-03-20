@@ -84,6 +84,22 @@ public class SymbolicResultSet implements ResultSet {
 		return Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
 	}
 	
+	public boolean next(String varName) throws SQLException {
+//		if (symbolicBoolean != null) {
+//			return symbolicBoolean;
+//		}
+//		return false;
+		
+		if (hasExplored) {
+			System.out.println("\nISNEXT: FALSE\n");
+			return false;
+		}
+		hasExplored = true;
+		System.out.println("\nISNEXT: TRUE\n");
+		
+		return Debug.makeSymbolicBoolean(varName);
+	}
+	
 	@Override
 	public void close() throws SQLException {
 		
