@@ -25,14 +25,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import gov.nasa.jpf.symbc.Debug;
+
 public class SymbolicPreparedStatement implements PreparedStatement {
-	String sql;
-	SymbolicResultSet symRs;
-	Map<Integer, Object> preparedStatements;
+	private String sql;
+	private SymbolicResultSet symRs;
+	private Map<Integer, Object> preparedStatements;
+	private int currCounter;
 	
-	public SymbolicPreparedStatement(String sql) {
+	public SymbolicPreparedStatement(String sql, int counter) {
 		this.sql = sql;
 		this.preparedStatements = new HashMap<>();
+		this.currCounter = counter;
 	}
 	
 	private String concatenatePreparedStatement() {
@@ -71,7 +75,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	
 	@Override
 	public boolean execute() throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
+		SymbolicResultSet symRs = new SymbolicResultSet(this.currCounter);
 		this.symRs = symRs;
 		
 		// concatenate full SQL statement
@@ -85,7 +89,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	
 	@Override
 	public ResultSet executeQuery() throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
+		SymbolicResultSet symRs = new SymbolicResultSet(this.currCounter);
 		this.symRs = symRs;
 		
 		// concatenate full SQL statement
@@ -99,7 +103,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
+		SymbolicResultSet symRs = new SymbolicResultSet(this.currCounter);
 		this.symRs = symRs;
 				
 		// print SQL
@@ -111,32 +115,17 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	@Override
 	public void setString(int parameterIndex, String x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
-//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
-//		System.out.println("===== SET PARAMETERS =====");
-//		for (int index : this.preparedStatements.keySet()) {
-//			System.out.println(this.preparedStatements.get(index));
-//		}
 	}
 	
 	@Override
 	public void setInt(int parameterIndex, int x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
-//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
-//		System.out.println("===== SET PARAMETERS =====");
-//		for (int index : this.preparedStatements.keySet()) {
-//			System.out.println(this.preparedStatements.get(index));
-//		}
 	}
 	
 
 	@Override
 	public void setBoolean(int parameterIndex, boolean x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
-//		System.out.println("\ncurr: " + parameterIndex + ": " + x);
-//		System.out.println("===== SET PARAMETERS =====");
-//		for (int index : this.preparedStatements.keySet()) {
-//			System.out.println(this.preparedStatements.get(index));
-//		}
 	}
 
 	@Override

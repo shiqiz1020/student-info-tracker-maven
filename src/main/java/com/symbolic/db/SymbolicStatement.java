@@ -9,16 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolicStatement implements Statement {
-	Map<String, SymbolicResultSet> symQueryResults;
+	private int currCounter;
 	
-	public SymbolicStatement() {
-		this.symQueryResults = new HashMap<>();
+	public SymbolicStatement(int counter) {
+		this.currCounter = counter;
 	}
 	
 	@Override
 	public ResultSet executeQuery(String arg0) throws SQLException {
-		SymbolicResultSet symRs = new SymbolicResultSet();
-		this.symQueryResults.put(arg0, symRs);
+		SymbolicResultSet symRs = new SymbolicResultSet(this.currCounter);
 		
 		// print out full SQL query statement
 		System.out.println("##################################################");
@@ -29,11 +28,6 @@ public class SymbolicStatement implements Statement {
 		
 		return symRs;
 	}
-	
-	
-//	public SymbolicResultSet getSymResultSet(String sql) {
-//		return this.symQueryResults.get(sql);
-//	}
 
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {

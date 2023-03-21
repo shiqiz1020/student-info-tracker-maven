@@ -23,81 +23,44 @@ import java.util.Calendar;
 import java.util.Map;
 
 import gov.nasa.jpf.symbc.Debug;
-//import gov.nasa.jpf.symbc.Symbolic;
 
 public class SymbolicResultSet implements ResultSet {
-	
-//	@Symbolic("true")
-//	private Integer symbolicInt;
-//	
-////	@Symbolic("true")
-//	private String symbolicString;
-//	
-//	private Boolean symbolicBoolean;
-//	
-////	@Symbolic("true")
-//	private Boolean symbolicHasNext;
-	
 	private boolean hasExplored = false;
+	private int currCounter;
 	
-	public SymbolicResultSet() {
-
+	public SymbolicResultSet(int counter) {
+		this.currCounter = counter;
 	}
 	
 	@Override
 	public int getInt(String columnLabel) throws SQLException {
-//		if (symbolicInt != null) {
-//			return symbolicInt;
-//		}
-//		return 0;
-		return Debug.makeSymbolicInteger(columnLabel);
+		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		return Debug.makeSymbolicInteger(symLabel);
 	}
 	
 	@Override
 	public String getString(String columnLabel) throws SQLException {
-//		if (symbolicString != null) {
-//			return symbolicString;
-//		}
-//		return null;
-		return Debug.makeSymbolicString(columnLabel);
+		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		return Debug.makeSymbolicString(symLabel);
 	}
 	
 	@Override
 	public boolean getBoolean(String columnLabel) throws SQLException {
-		return Debug.makeSymbolicBoolean(columnLabel);
+		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		return Debug.makeSymbolicBoolean(symLabel);
 	}
 	
 	@Override
 	public boolean next() throws SQLException {
-//		if (symbolicBoolean != null) {
-//			return symbolicBoolean;
-//		}
-//		return false;
-		
 		if (hasExplored) {
-			System.out.println("\nISNEXT: FALSE\n");
+//			System.out.println("\nISNEXT: FALSE\n");
 			return false;
 		}
 		hasExplored = true;
-		System.out.println("\nISNEXT: TRUE\n");
+//		System.out.println("\nISNEXT: TRUE\n");
 		
-		return Debug.makeSymbolicBoolean("symbolicResultSetBoolean");
-	}
-	
-	public boolean next(String varName) throws SQLException {
-//		if (symbolicBoolean != null) {
-//			return symbolicBoolean;
-//		}
-//		return false;
-		
-		if (hasExplored) {
-			System.out.println("\nISNEXT: FALSE\n");
-			return false;
-		}
-		hasExplored = true;
-		System.out.println("\nISNEXT: TRUE\n");
-		
-		return Debug.makeSymbolicBoolean(varName);
+		String symLabel = "rsNextSymBoolean" + "_" + Integer.toString(this.currCounter);
+		return Debug.makeSymbolicBoolean(symLabel);
 	}
 	
 	@Override

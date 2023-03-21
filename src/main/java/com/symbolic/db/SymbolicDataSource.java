@@ -13,6 +13,11 @@ public class SymbolicDataSource implements DataSource {
 	public SymbolicDataSource() {
 		
 	}
+	
+	@Override
+	public Connection getConnection() throws SQLException {
+		return new SymbolicConnection();
+	}
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {
@@ -57,19 +62,9 @@ public class SymbolicDataSource implements DataSource {
 	}
 
 	@Override
-	public Connection getConnection() throws SQLException {
-		return new SymbolicConnection();
-	}
-
-	@Override
 	public Connection getConnection(String arg0, String arg1) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-//	public Connection getSymbolicConnection() throws SQLException {
-//		return this.symConn;
-//	}
 
 }

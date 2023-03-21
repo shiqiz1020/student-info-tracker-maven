@@ -22,27 +22,28 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class SymbolicConnection implements Connection {
-	List<SymbolicStatement> symStatements;
+	private List<Object> symStatements;
+	private int counter = 0;
 	
 	public SymbolicConnection() {
-		this.symStatements = new ArrayList<SymbolicStatement>();
+		this.symStatements = new ArrayList<Object>();
 	}
 
 	@Override
 	public Statement createStatement() throws SQLException {
-		SymbolicStatement symStmt = new SymbolicStatement();
+		this.counter += 1;
+		SymbolicStatement symStmt = new SymbolicStatement(this.counter);
 		this.symStatements.add(symStmt);
 		return symStmt;
 	}
 	
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		return new SymbolicPreparedStatement(sql);
+		this.counter += 1;
+		SymbolicPreparedStatement symStmt = new SymbolicPreparedStatement(sql, this.counter);
+		this.symStatements.add(symStmt);
+		return symStmt;
 	}
-	
-//	public Statement getSymStatement() {
-//		return this.symStatements.get(this.symStatements.size() - 1);
-//	}
 	
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
