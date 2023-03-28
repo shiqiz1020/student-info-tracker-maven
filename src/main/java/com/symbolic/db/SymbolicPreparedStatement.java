@@ -40,6 +40,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	}
 	
 	private String concatenatePreparedStatement() {
+//		System.out.println("PRINT: " + this.sql);
 		String fullSQL = "";
 		String[] splitSQL = this.sql.split("\\s");
 		int counter = 0;
@@ -47,9 +48,12 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		for (String temp : splitSQL) {
 			if (temp.equals("?")) {
 				counter += 1;
+//				System.out.println("curr slot: " + this.preparedStatements.get(counter) + "\n");
 				fullSQL = fullSQL.concat(this.preparedStatements.get(counter).toString() + " ");
+//				System.out.println(fullSQL);
 			} else {
 				fullSQL = fullSQL.concat(temp + " ");
+//				System.out.println(fullSQL);
 			}
 		}
 		return fullSQL;
@@ -57,6 +61,7 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	
 	private void printSQL(String fullSQL) {
 		System.out.println("\n##################################################");
+		System.out.println("Current Query: " + this.currCounter + "\n");
 		// print out unfilled SQL prepared statement
 		System.out.println("===== UNFILLED SQL PREPARED STATEMENT =====");
 		System.out.println(this.sql);
@@ -71,6 +76,16 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(fullSQL);
 //		System.out.println("##################################################\n");
+	}
+	
+	public void printSQL(int key) {
+		System.out.println("\n===== Query " + key + ": UNFILLED SQL PREPARED STATEMENT =====");
+		System.out.println(this.sql);
+		
+		System.out.println("\n===== Query " + key + ": PREPARED STATEMENT PARAMETERS =====");
+		for (int index : this.preparedStatements.keySet()) {
+			System.out.println(this.preparedStatements.get(index));
+		}
 	}
 	
 	@Override
@@ -122,10 +137,23 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		this.preparedStatements.put(parameterIndex, x);
 	}
 	
-
 	@Override
 	public void setBoolean(int parameterIndex, boolean x) throws SQLException {
 		this.preparedStatements.put(parameterIndex, x);
+	}
+	
+	@Override
+	public int executeUpdate() throws SQLException {
+		SymbolicResultSet symRs = new SymbolicResultSet(this.currCounter);
+		this.symRs = symRs;
+		
+		// concatenate full SQL statement
+		String fullSQL = concatenatePreparedStatement();
+		
+		// print SQL
+		printSQL(fullSQL);
+		
+		return 0;
 	}
 
 	@Override
@@ -396,12 +424,6 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 	public void clearParameters() throws SQLException {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public int executeUpdate() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

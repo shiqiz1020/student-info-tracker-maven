@@ -34,19 +34,19 @@ public class SymbolicResultSet implements ResultSet {
 	
 	@Override
 	public int getInt(String columnLabel) throws SQLException {
-		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		String symLabel = "#" + Integer.toString(this.currCounter) + "#" + "_" + columnLabel;
 		return Debug.makeSymbolicInteger(symLabel);
 	}
 	
 	@Override
 	public String getString(String columnLabel) throws SQLException {
-		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		String symLabel = "#" + Integer.toString(this.currCounter) + "#" + "_" + columnLabel;
 		return Debug.makeSymbolicString(symLabel);
 	}
 	
 	@Override
 	public boolean getBoolean(String columnLabel) throws SQLException {
-		String symLabel = columnLabel + "_" + Integer.toString(this.currCounter);
+		String symLabel = "#" + Integer.toString(this.currCounter) + "#" + "_" + columnLabel;
 		return Debug.makeSymbolicBoolean(symLabel);
 	}
 	
@@ -59,7 +59,7 @@ public class SymbolicResultSet implements ResultSet {
 		hasExplored = true;
 //		System.out.println("\nISNEXT: TRUE\n");
 		
-		String symLabel = "rsNextSymBoolean" + "_" + Integer.toString(this.currCounter);
+		String symLabel = "#" + Integer.toString(this.currCounter) + "#" + "_" + "rsNextSymBoolean";
 		return Debug.makeSymbolicBoolean(symLabel);
 	}
 	

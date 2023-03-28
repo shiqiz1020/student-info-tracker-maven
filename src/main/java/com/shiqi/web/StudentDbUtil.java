@@ -5,7 +5,12 @@ package com.shiqi.web;
 //import java.sql.ResultSet;
 //import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import javax.sql.DataSource;
 
 import com.symbolic.db.SymbolicResultSet;
@@ -13,12 +18,7 @@ import com.symbolic.db.SymbolicStatement;
 import com.symbolic.db.SymbolicConnection;
 import com.symbolic.db.SymbolicDataSource;
 import com.symbolic.db.SymbolicPreparedStatement;
-
-//import gov.nasa.jpf.Config;
-//import gov.nasa.jpf.JPF;
-//import gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener;
 import gov.nasa.jpf.symbc.Debug;
-//import gov.nasa.jpf.symbc.Symbolic;
 
 public class StudentDbUtil {
 //	private DataSource dataSource;
@@ -209,8 +209,10 @@ public class StudentDbUtil {
             }
                 
             // execute statement
+            String result = Debug.getPC_prefix_notation();
             SymbolicResultSet rs = (SymbolicResultSet) stmt.executeQuery();
-            printPC();
+//            printPC();
+            printPC(result, symConnection);
          
             // retrieve data from result set row
             while (rs.next()) {
@@ -231,14 +233,18 @@ public class StudentDbUtil {
                 	stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
                 	stmt.setString(1, "John");
                 	stmt.setString(2, "Doe");
+                	result = Debug.getPC_prefix_notation();
                 	SymbolicResultSet adminRs = (SymbolicResultSet) stmt.executeQuery();
-                	printPC();
+//                	printPC();
+                	printPC(result, symConnection);
                 	
                 	if (adminRs.next()) {
                 		sql = "SELECT email FROM student WHERE first_name = John AND last_name LIKE = Doe";
                 		stmt = (SymbolicPreparedStatement) symConnection.prepareStatement(sql);
-                    	SymbolicResultSet jdRs = (SymbolicResultSet) stmt.executeQuery();
-                    	printPC();
+                		result = Debug.getPC_prefix_notation();
+                		SymbolicResultSet jdRs = (SymbolicResultSet) stmt.executeQuery();
+//                    	printPC();
+                		printPC(result, symConnection);
                     	
                     	id = jdRs.getInt("id");
                         firstName = jdRs.getString("first_name");
@@ -258,8 +264,10 @@ public class StudentDbUtil {
                     	stmt.setString(3, email);
                     	stmt.setInt(4, id);
     	    			
+                    	result = Debug.getPC_prefix_notation();
                     	stmt.execute();
-    	    			printPC();
+//    	    			printPC();
+                    	printPC(result, symConnection);
                     	
                 	}
                 } else if (id > 100) {
@@ -277,8 +285,10 @@ public class StudentDbUtil {
                 	stmt.setBoolean(4, false);
                 	stmt.setInt(5, id);
 	    			
+                	result = Debug.getPC_prefix_notation();
                 	stmt.execute();
-	    			printPC();
+//	    			printPC();
+                	printPC(result, symConnection);
                 }
             } 
             return students;
@@ -291,7 +301,36 @@ public class StudentDbUtil {
 //		System.out.println("##################################################");
 		System.out.println("\n===== SOLVED PATH CONSTRAINT SO FAR =====");
 //    	System.out.println(Debug.getSolvedPC());
-    	System.out.println(Debug.getPC_prefix_notation());
+		System.out.println(Debug.getPC_prefix_notation());
+//		String result = Debug.getPC_prefix_notation();
+//    	String[] splitResult = result.split("\\n");
+//    	System.out.println("xxxxxxxxx");
+//    	System.out.println(splitResult[1]);
+//    	int counter = 0;
+//    	for (String s : splitResult) {
+//    		System.out.println(counter + ": " + s);
+//    		counter++;
+//    	}
+    	System.out.println("##################################################\n");
+	}
+	
+	private void printPC(String result, SymbolicConnection symConnection) {
+		System.out.println("\n===== SOLVED PATH CONSTRAINT SO FAR =====");
+    	String[] splitResult = result.split("\\n");
+    	System.out.println(splitResult[1]);
+    	System.out.println();
+    	
+    	Set<String> allMatches = new HashSet<String>();
+    	Matcher matcher = Pattern.compile("\\s#(\\d+)#_").matcher(result);
+    	while (matcher.find()) {
+    		String r = matcher.group(1);
+    		if (!allMatches.contains(r)) {
+    			allMatches.add(r);
+    			symConnection.printRelatedSql(Integer.parseInt(r));
+    		}
+    		
+//    		System.out.println(r);
+    	}
     	System.out.println("##################################################\n");
 	}
 	

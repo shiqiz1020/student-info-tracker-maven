@@ -16,24 +16,30 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class SymbolicConnection implements Connection {
-	private List<Object> symStatements;
 	private int counter = 0;
+	private Map<Integer,Object> pastSqlRecord;
 	
 	public SymbolicConnection() {
-		this.symStatements = new ArrayList<Object>();
+		this.pastSqlRecord = new HashMap<>();
+	}
+	
+	public void printRelatedSql(int key) {
+		SymbolicPreparedStatement symStmt = (SymbolicPreparedStatement) this.pastSqlRecord.get(key);
+		symStmt.printSQL(key);
 	}
 
 	@Override
 	public Statement createStatement() throws SQLException {
 		this.counter += 1;
 		SymbolicStatement symStmt = new SymbolicStatement(this.counter);
-		this.symStatements.add(symStmt);
+		this.pastSqlRecord.put(this.counter, symStmt);
 		return symStmt;
 	}
 	
@@ -41,7 +47,7 @@ public class SymbolicConnection implements Connection {
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
 		this.counter += 1;
 		SymbolicPreparedStatement symStmt = new SymbolicPreparedStatement(sql, this.counter);
-		this.symStatements.add(symStmt);
+		this.pastSqlRecord.put(this.counter, symStmt);
 		return symStmt;
 	}
 	
