@@ -298,26 +298,21 @@ public class StudentDbUtil {
     }
 	
 	private void printPC() {
-//		System.out.println("##################################################");
 		System.out.println("\n===== SOLVED PATH CONSTRAINT SO FAR =====");
-//    	System.out.println(Debug.getSolvedPC());
 		System.out.println(Debug.getPC_prefix_notation());
-//		String result = Debug.getPC_prefix_notation();
-//    	String[] splitResult = result.split("\\n");
-//    	System.out.println("xxxxxxxxx");
-//    	System.out.println(splitResult[1]);
-//    	int counter = 0;
-//    	for (String s : splitResult) {
-//    		System.out.println(counter + ": " + s);
-//    		counter++;
-//    	}
     	System.out.println("##################################################\n");
 	}
 	
 	private void printPC(String result, SymbolicConnection symConnection) {
 		System.out.println("\n===== SOLVED PATH CONSTRAINT SO FAR =====");
     	String[] splitResult = result.split("\\n");
+//    	for (int i=0; i < splitResult.length; i++) {
+//    		System.out.println(i + ": " + splitResult[i]);
+//    	}
     	System.out.println(splitResult[1]);
+    	if (splitResult.length > 2) {
+    		System.out.println(splitResult[2]);
+    	}
     	System.out.println();
     	
     	Set<String> allMatches = new HashSet<String>();

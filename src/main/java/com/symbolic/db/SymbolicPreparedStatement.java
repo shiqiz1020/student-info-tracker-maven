@@ -75,14 +75,13 @@ public class SymbolicPreparedStatement implements PreparedStatement {
 		// print out full SQL query statement
 		System.out.println("\n===== FULL SQL STATEMENT =====");
 		System.out.println(fullSQL);
-//		System.out.println("##################################################\n");
 	}
 	
-	public void printSQL(int key) {
-		System.out.println("\n===== Query " + key + ": UNFILLED SQL PREPARED STATEMENT =====");
+	public void printSQL(int queryNumber) {
+		System.out.println("\n===== Dependency: Query " + queryNumber + " UNFILLED SQL PREPARED STATEMENT =====");
 		System.out.println(this.sql);
 		
-		System.out.println("\n===== Query " + key + ": PREPARED STATEMENT PARAMETERS =====");
+		System.out.println("\n===== Dependency: Query " + queryNumber + " PREPARED STATEMENT PARAMETERS =====");
 		for (int index : this.preparedStatements.keySet()) {
 			System.out.println(this.preparedStatements.get(index));
 		}
